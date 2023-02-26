@@ -3,8 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
-  Dimensions,
+  TouchableOpacity,
   SafeAreaView,
   ScrollView,
 } from "react-native";
@@ -12,8 +11,6 @@ import { BarChart } from "react-native-chart-kit";
 
 export default function App() {
   const [count, setCount] = useState([]);
-  const deviceWidth = Dimensions.get("screen").width;
-  console.log(deviceWidth);
   function get_1_or_0() {
     return Math.floor(Math.random() * 2);
   }
@@ -22,10 +19,8 @@ export default function App() {
     let bitsNeeded = Math.ceil(Math.log2(n + 1));
     let randomNum = 0;
     let bitIndex = 0;
-    while (bitIndex < bitsNeeded) {
-      randomNum <<= 1;
-      randomNum |= get_1_or_0();
-      bitIndex++;
+    for (let i = 0; i < bitsNeeded; i++) {
+      randomNum = (randomNum << 1) | get_1_or_0();
     }
     if (randomNum <= n) {
       return randomNum;
@@ -35,7 +30,7 @@ export default function App() {
 
   function test_get_random() {
     let counts = Array(11).fill(0);
-    for (let i = 0; i < 100000; i++) {
+    for (let i = 0; i < 1000; i++) {
       let rand = get_random(10);
       counts[rand]++;
     }
@@ -61,12 +56,14 @@ export default function App() {
             backgroundGradientTo: "#ffa726",
             decimalPlaces: 0,
             color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `#000`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             style: { borderRadius: 16 },
           }}
           style={styles.chart}
         />
-        <Button title="Get Random" onPress={test_get_random} />
+        <TouchableOpacity style={styles.getRandomBtn} onPress={test_get_random}>
+          <Text style={{ color: "#fff", fontWeight: "bold" }}>Get Random</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.counts}>
         <ScrollView showsVerticalScrollIndicator={false}>
@@ -83,6 +80,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
+    fontFamily: "Arial",
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
@@ -102,5 +100,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     marginVertical: 10,
+  },
+  getRandomBtn: {
+    padding: 15,
+    backgroundColor: "#e26a00",
+    borderRadius: 12,
   },
 });
