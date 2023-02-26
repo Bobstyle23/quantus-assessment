@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Dimensions,
 } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 
@@ -18,7 +19,6 @@ export default function App() {
   function get_random(n) {
     let bitsNeeded = Math.ceil(Math.log2(n + 1));
     let randomNum = 0;
-    let bitIndex = 0;
     for (let i = 0; i < bitsNeeded; i++) {
       randomNum = (randomNum << 1) | get_1_or_0();
     }
@@ -38,7 +38,7 @@ export default function App() {
   }
 
   let data = {
-    labels: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+    labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"],
     datasets: [{ data: count }],
   };
 
@@ -48,7 +48,7 @@ export default function App() {
       <View style={styles.container}>
         <BarChart
           data={data}
-          width={350}
+          width={Dimensions.get("window").width}
           height={350}
           chartConfig={{
             backgroundColor: "#e26a00",
@@ -58,10 +58,14 @@ export default function App() {
             color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
             style: { borderRadius: 16 },
+            barPercentage: 0.5,
           }}
           style={styles.chart}
         />
-        <TouchableOpacity style={styles.getRandomBtn} onPress={test_get_random}>
+        <TouchableOpacity
+          style={styles.randomGeneratorBtn}
+          onPress={test_get_random}
+        >
           <Text style={{ color: "#fff", fontWeight: "bold" }}>Get Random</Text>
         </TouchableOpacity>
       </View>
@@ -101,7 +105,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginVertical: 10,
   },
-  getRandomBtn: {
+  randomGeneratorBtn: {
     padding: 15,
     backgroundColor: "#e26a00",
     borderRadius: 12,
