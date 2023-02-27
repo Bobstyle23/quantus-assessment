@@ -6,12 +6,15 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
-  Dimensions,
+  Dimensions, Platform,
 } from "react-native";
 import { BarChart } from "react-native-chart-kit";
 
 export default function App() {
   const [count, setCount] = useState([]);
+
+
+
   function get_1_or_0() {
     return Math.floor(Math.random() * 2);
   }
@@ -48,8 +51,8 @@ export default function App() {
       <View style={styles.container}>
         <BarChart
           data={data}
-          width={Dimensions.get("window").width}
-          height={350}
+          width={Platform.OS === 'web' ? Dimensions.get('screen').width / 3 : Dimensions.get("window").width}
+          height={250}
           chartConfig={{
             backgroundColor: "#e26a00",
             backgroundGradientFrom: "#fb8c00",
@@ -62,13 +65,17 @@ export default function App() {
           }}
           style={styles.chart}
         />
-        <TouchableOpacity
+
+      </View>
+      <View style={styles.generatorContainer}>
+
+      <TouchableOpacity
           style={styles.randomGeneratorBtn}
           onPress={test_get_random}
-        >
-          <Text style={{ color: "#fff", fontWeight: "bold" }}>Get Random</Text>
-        </TouchableOpacity>
-      </View>
+      >
+        <Text style={{ color: "#fff", fontWeight: "bold" }}>Get Random</Text>
+      </TouchableOpacity>
+        </View>
       <View style={styles.counts}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {count.map((count, index) => (
@@ -105,6 +112,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginVertical: 10,
   },
+    generatorContainer: { alignItems:'center', marginVertical:20, justifyContent:'center', marginHorizontal: Platform.OS === 'web'? 50 : 0 },
   randomGeneratorBtn: {
     padding: 15,
     backgroundColor: "#e26a00",
